@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>CareRelay — Project Starting Guide</title>
+    <style>
+        :root {
+            --ink: #21383e;
+            --muted: #52666c;
+            --accent: #176c68;
+            --paper: #fff;
+            --bg: #edf3f2
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 17px/1.65 system-ui, sans-serif
+        }
+
+        main {
+            max-width: 980px;
+            margin: 40px auto;
+            background: var(--paper);
+            padding: 52px;
+            border-radius: 18px
+        }
+
+        header {
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 25px
+        }
+
+        h1 {
+            font-size: 48px;
+            line-height: 1.1;
+            margin: 12px 0
+        }
+
+        h2 {
+            margin-top: 42px;
+            line-height: 1.3;
+            color: var(--accent)
+        }
+
+        h3 {
+            margin-bottom: 8px
+        }
+
+        p {
+            margin: 12px 0
+        }
+
+        small,
+        .muted {
+            color: var(--muted)
+        }
+
+        .tag {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            font-size: 12px;
+            color: var(--accent)
+        }
+
+        .callout {
+            background: #eef7f5;
+            border-left: 4px solid var(--accent);
+            padding: 16px 22px;
+            margin: 22px 0
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 22px;
+            margin: 25px 0
+        }
+
+        a {
+            color: var(--accent)
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 15px;
+            margin: 18px 0
+        }
+
+        th,
+        td {
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid #d5e2df;
+            padding: 12px
+        }
+
+        th {
+            background: #eef7f5
+        }
+
+        code {
+            font: 14px/1.5 ui-monospace, monospace;
+            overflow-wrap: anywhere
+        }
+
+        li {
+            margin: 7px 0
+        }
+
+        footer {
+            margin-top: 45px;
+            border-top: 1px solid #d5e2df;
+            padding-top: 20px;
+            font-size: 14px
+        }
+
+        @media(max-width:650px) {
+            main {
+                margin: 0;
+                padding: 24px;
+                border-radius: 0
+            }
+
+            h1 {
+                font-size: 38px
+            }
+
+            table {
+                font-size: 13px
+            }
+
+            th,
+            td {
+                padding: 8px
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                font-size: 11pt
+            }
+
+            main {
+                margin: 0;
+                padding: 0;
+                max-width: none
+            }
+
+            nav {
+                display: none
+            }
+
+            h2,
+            h3 {
+                break-after: avoid
+            }
+
+            tr,
+            .callout {
+                break-inside: avoid
+            }
+
+            a {
+                color: inherit
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header><span class="tag">Project notebook · Planning draft 0.1</span>
+            <h1>CareRelay</h1>
+            <p>Helping people share the work of being there.</p><small>Prepared for Rahsaan Pringle · October 8,
+                2026</small>
+        </header>
+        <div class="callout"><strong>The starting point:</strong> A patient can have an excellent medical team and still
+            need family and friends to coordinate visits, practical help, and handoffs. CareRelay starts with that human
+            work.</div>
+        <p>This is a reference for future conversations and development. The project name and an HTML / LocalStorage
+            starting approach are established. Features, data fields, and architecture below are proposals to
+            explore—not a finished specification.</p>
+        <p><strong>Your project
+                folder:</strong><br><code>C:\Users\Rahsa\Documents\repos\RahsaanPringle\PortForge\CareRelay</code><br>Suggested
+            home for this document: <code>docs/CareRelay-project-guide.html</code>.</p>
+        <nav aria-label="Contents"><a href="#purpose">Purpose</a><a href="#first">First version</a><a
+                href="#parallel">Parallel ideas</a><a href="#data">Data</a><a href="#growth">Growth path</a><a
+                href="#questions">Open questions</a><a href="#start">When ready</a></nav>
+        <section id="purpose">
+            <h2>1. Why this project exists</h2>
+            <p>The idea comes from your experience when your mother-in-law was sick and dying with cancer. Her hospital
+                team provided great medical care, while family members worked together to make sure she was never alone
+                and always had someone available to help.</p>
+            <p>CareRelay should make that coordination easier to see and easier to share. Someone arriving tired or
+                worried should quickly understand who is there, who comes next, and what still needs attention.</p>
+            <h3>Questions the page should answer</h3>
+            <ul>
+                <li>Who is scheduled to be with the patient now and next?</li>
+                <li>Where are the gaps in coverage?</li>
+                <li>What help is needed, and who has offered to do it?</li>
+                <li>What does the next caregiver need to know?</li>
+                <li>Who should I contact if plans change?</li>
+            </ul>
+            <p>The initial focus is family and friend coordination. Paid caregivers, multiple patients, and clinical
+                integrations can remain separate ideas until their needs become clearer.</p>
+        </section>
+        <section id="first">
+            <h2>2. A small first version</h2>
+            <p>Start with one patient, one care circle, and a single HTML page. Use LocalStorage to preserve the working
+                data in the same browser. The goal is to learn whether the workflow feels useful before investing in a
+                shared system.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Proposed first behavior</th>
+                        <th>What it helps us learn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Today</td>
+                        <td>Show planned coverage, the next handoff, and open tasks.</td>
+                        <td>What people need to see first.</td>
+                    </tr>
+                    <tr>
+                        <td>Care circle</td>
+                        <td>Add names, contact information, and a short relationship or role.</td>
+                        <td>How helpers identify and contact one another.</td>
+                    </tr>
+                    <tr>
+                        <td>Coverage</td>
+                        <td>Add a start and end time, location, and assigned helper. Clearly label open periods.</td>
+                        <td>How the family arranges someone to be there.</td>
+                    </tr>
+                    <tr>
+                        <td>Tasks</td>
+                        <td>Create practical requests such as bringing dinner or arranging a ride; assign and complete
+                            them.</td>
+                        <td>How responsibilities move from request to completion.</td>
+                    </tr>
+                    <tr>
+                        <td>Handoff notes</td>
+                        <td>Record a short dated note with an author.</td>
+                        <td>Which information is useful to the next person.</td>
+                    </tr>
+                    <tr>
+                        <td>Import / export</td>
+                        <td>Export the full working dataset to JSON and import a validated file.</td>
+                        <td>How to retain the prototype data and move it later.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="callout"><strong>LocalStorage has an important boundary:</strong> It belongs to a browser
+                profile and origin. It does not synchronize family members' devices. This first version is a workflow
+                prototype; shared coordination will require a backend. Exporting and importing a file is a manual
+                transfer, not live collaboration.</div>
+            <p>For early exploration, use fictional people and notes. LocalStorage does not provide application-level
+                access control or encryption. Browser clearing can remove the data. Keep exported backups, and establish
+                access and privacy requirements before storing real patient information in a shared version.</p>
+            <h3>A sample walk-through</h3>
+            <p>Alex is scheduled from 8 a.m. to noon. Jordan takes noon to 4 p.m. The evening period is unassigned.
+                Someone opens Today, sees the gap, assigns Sam, and adds a request to bring dinner. Before leaving, Alex
+                records a practical handoff: “Phone charger is in the bedside drawer; Jordan is bringing lunch.”</p>
+            <p>A scheduled shift is a plan. It does not prove that someone has arrived. If actual presence becomes
+                important, introduce a separate check-in rather than treating an assignment as confirmation.</p>
+        </section>
+        <section id="parallel">
+            <h2>3. Develop ideas in parallel</h2>
+            <p>You do not need to finish one line of thinking before opening another. Keep several tracks moving, then
+                bring useful discoveries together in the next small prototype.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Track</th>
+                        <th>Explore</th>
+                        <th>Keep a record of</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Family experience</td>
+                        <td>Real coordination problems, stressful moments, and workarounds.</td>
+                        <td>Short scenarios and questions.</td>
+                    </tr>
+                    <tr>
+                        <td>Page and interaction</td>
+                        <td>Today view, coverage layout, simple forms, readable phone display.</td>
+                        <td>Sketches and layout alternatives.</td>
+                    </tr>
+                    <tr>
+                        <td>Information model</td>
+                        <td>People, coverage periods, tasks, notes, relationships.</td>
+                        <td>Candidate fields and example JSON.</td>
+                    </tr>
+                    <tr>
+                        <td>Future system</td>
+                        <td>Shared access, invitations, notifications, persistence.</td>
+                        <td>Options and tradeoffs, without committing early.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Tag ideas as <strong>Now</strong>, <strong>Next</strong>, or <strong>Explore</strong>. A new idea can be
+                worth recording without immediately expanding the current version. Record a decision only when you
+                actually choose it.</p>
+            <h3>A lightweight decision entry</h3>
+            <p><strong>Question:</strong> What are we choosing?<br><strong>Decision:</strong> What did we
+                select?<br><strong>Reason:</strong> Which scenario made it useful?<br><strong>Revisit when:</strong>
+                What change would make us reconsider?</p>
+        </section>
+        <section id="data">
+            <h2>4. Candidate information model</h2>
+            <p>Use stable IDs so records reference one another without depending on a person's display name. Keep a
+                schema version in exports so later versions can recognize and migrate older data.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Record</th>
+                        <th>Candidate fields</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Project dataset</td>
+                        <td>schemaVersion, exportedAt, patient, caregivers, coveragePeriods, tasks, handoffNotes</td>
+                    </tr>
+                    <tr>
+                        <td>Patient</td>
+                        <td>id, preferredName, careLocation, generalCoordinationNotes</td>
+                    </tr>
+                    <tr>
+                        <td>Caregiver</td>
+                        <td>id, name, relationship, phone, email, active</td>
+                    </tr>
+                    <tr>
+                        <td>Coverage period</td>
+                        <td>id, startAt, endAt, caregiverId (optional for an open period), location, status</td>
+                    </tr>
+                    <tr>
+                        <td>Task</td>
+                        <td>id, title, description, assigneeId, dueAt, status, completedAt</td>
+                    </tr>
+                    <tr>
+                        <td>Handoff note</td>
+                        <td>id, authorId, createdAt, text</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Define the hours that actually need coverage before calculating gaps. An empty calendar outside those
+                hours is not necessarily a problem. Store date-times consistently with timezone information and display
+                them in the care location's timezone. Decide how overnight periods and overlapping helpers should
+                behave.</p>
+            <p>Consider a namespaced storage key such as <code>careRelay.data.v1</code>. Keep storage operations
+                separate from page rendering so the data source can change later. Imported JSON should be checked before
+                replacing current data, with a backup or explicit replacement choice.</p>
+        </section>
+        <section id="growth">
+            <h2>5. Grow when a need justifies it</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Stage</th>
+                        <th>Purpose</th>
+                        <th>Reason to move forward</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>HTML + LocalStorage</td>
+                        <td>Try the workflow, forms, and schema with sample data.</td>
+                        <td>The basic page answers the core coordination questions.</td>
+                    </tr>
+                    <tr>
+                        <td>React interface</td>
+                        <td>Organize increasingly complex views and reusable controls.</td>
+                        <td>Interface state and components become hard to maintain.</td>
+                    </tr>
+                    <tr>
+                        <td>API + database</td>
+                        <td>Provide one shared source of data across devices.</td>
+                        <td>Multiple caregivers need current shared information.</td>
+                    </tr>
+                    <tr>
+                        <td>Accounts and care circles</td>
+                        <td>Invite helpers and control who can view or change each circle.</td>
+                        <td>Real users and private information enter the system.</td>
+                    </tr>
+                    <tr>
+                        <td>Notifications and history</td>
+                        <td>Help people respond to changes and see who changed a plan.</td>
+                        <td>Actual use reveals missed handoffs or unclear changes.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>React and the backend are independent choices. React alone does not add sharing, and a plain HTML
+                interface can use an API. A C# / ASP.NET Core API and SQL Server would fit your existing experience, but
+                that choice can wait until the workflow is clearer.</p>
+            <p>Before a shared release, define invitation and access rules, authorization on each care circle,
+                simultaneous edit behavior, backups, and data retention. If reminders are introduced, decide how to show
+                delivery failures; a sent notification is not proof that someone accepted responsibility.</p>
+        </section>
+        <section id="questions">
+            <h2>6. Questions for our next conversations</h2>
+            <ul>
+                <li>Is the main job continuous bedside coverage, occasional visits, practical tasks, or some
+                    combination?</li>
+                <li>Who organizes the care circle, and can any helper change the schedule?</li>
+                <li>Should people volunteer for open periods, or should someone assign them?</li>
+                <li>What happens when a caregiver cannot make it or is running late?</li>
+                <li>What information would you have wanted to see when arriving at the hospital?</li>
+                <li>Should the patient participate directly, and what preferences should guide the page?</li>
+                <li>What belongs in a handoff note, and what should stay with the medical team's records?</li>
+                <li>What is the smallest feature that would have helped your family that first week?</li>
+            </ul>
+            <p>These are discussion prompts, not prerequisites. We can take one at a time and let your experience shape
+                the answers.</p>
+        </section>
+        <section id="start">
+            <h2>7. When you are ready to start</h2>
+            <ol>
+                <li>Choose one concrete family scenario and write what success looks like.</li>
+                <li>Sketch the Today view and one form before adding more sections.</li>
+                <li>Create a small fictional dataset with an open coverage period and an unassigned task.</li>
+                <li>Build the smallest HTML / LocalStorage slice that completes that scenario.</li>
+                <li>Add JSON import and export early so the evolving dataset stays portable.</li>
+                <li>Walk through it as a tired caregiver on a phone, then adjust what feels confusing.</li>
+                <li>Turn the next useful improvements into small PBIs with observable acceptance criteria.</li>
+            </ol>
+            <h3>Candidate first PBIs</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>PBI</th>
+                        <th>Example acceptance criterion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Maintain the care circle</td>
+                        <td>After adding a helper and refreshing, that helper still appears.</td>
+                    </tr>
+                    <tr>
+                        <td>Schedule coverage</td>
+                        <td>A valid period shows its times and helper; an end before the start is rejected.</td>
+                    </tr>
+                    <tr>
+                        <td>Show open coverage</td>
+                        <td>An unassigned period is clearly labeled “Needs someone.”</td>
+                    </tr>
+                    <tr>
+                        <td>Share a practical task</td>
+                        <td>A task can be assigned and completed, and the changes survive a refresh.</td>
+                    </tr>
+                    <tr>
+                        <td>Carry data forward</td>
+                        <td>An exported dataset can be restored; invalid input leaves the existing data intact.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>Suggested future folder layout:</strong> <code>docs/</code> for project notes,
+                <code>index.html</code> for the prototype, <code>styles.css</code> for presentation, <code>app.js</code>
+                for behavior, and <code>sample-data/</code> for fictional examples. These are suggestions for later;
+                this document does not create the application.</p>
+        </section>
+        <footer>CareRelay · Keep the purpose close: make it easier for people to be there, share the work, and pass
+            along what the next person needs.</footer>
+    </main>
+</body>
+
+</html>
